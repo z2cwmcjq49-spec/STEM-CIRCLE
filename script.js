@@ -1,78 +1,5 @@
 /* =========================================
-   فتح وإغلاق النوافذ
-========================================= */
-
-function openPopup(id){
-
-    const popup =
-    document.getElementById(id);
-
-    popup.style.display = "flex";
-}
-
-
-function closePopup(id){
-
-    const popup =
-    document.getElementById(id);
-
-    popup.style.display = "none";
-}
-
-
-
-/* =========================================
-   التمدد الهندسي
-========================================= */
-
-function calculateStretch(){
-
-    const factor =
-    parseFloat(
-    document.getElementById(
-    "stretchFactor"
-    ).value
-    );
-
-    if(
-        isNaN(factor) ||
-        factor <= 0
-    ){
-
-        alert(
-        "أدخل معامل تمدد صحيح أكبر من صفر"
-        );
-
-        return;
-    }
-
-    document.getElementById(
-    "stretchResult"
-    ).innerHTML =
-
-    `
-    <b>
-    معامل التمدد = ${factor}
-    </b>
-
-    <br><br>
-
-    الشكل الجديد =
-    الشكل الأصلي × معامل التمدد
-
-    <br><br>
-
-    الحجم الجديد =
-    ${(60 * factor).toFixed(1)}
-    `;
-
-    drawStretch(factor);
-}
-
-
-
-/* =========================================
-   رسم التمدد
+   رسم التمدد المطور
 ========================================= */
 
 function drawStretch(factor){
@@ -85,6 +12,9 @@ function drawStretch(factor){
     const ctx =
     canvas.getContext("2d");
 
+
+    /* تنظيف اللوحة */
+
     ctx.clearRect(
     0,
     0,
@@ -94,37 +24,48 @@ function drawStretch(factor){
 
 
 
-    /* حجم الشكل الأصلي */
+    /* =====================================
+       القيم الأساسية
+    ===================================== */
 
-    const originalSize = 60;
+    const originalMathSize = 2;
 
-
-    /* الحجم الجديد */
-
-    let newSize =
-    originalSize * factor;
+    const originalDrawSize = 60;
 
 
+    /* الحجم الرياضي الجديد */
 
-    /* حدود الحجم */
+    const newMathSize =
+    originalMathSize * factor;
 
-    newSize =
+
+    /* الحجم المرسوم */
+
+    let newDrawSize =
+    originalDrawSize * factor;
+
+
+    /* منع الخروج من الشاشة */
+
+    newDrawSize =
     Math.max(
-    20,
-    Math.min(120,newSize)
+    25,
+    Math.min(140,newDrawSize)
     );
 
 
 
-    /* الشكل الأصلي */
+    /* =====================================
+       الشكل الأصلي
+    ===================================== */
 
     ctx.beginPath();
 
     ctx.rect(
     60,
     100,
-    originalSize,
-    originalSize
+    originalDrawSize,
+    originalDrawSize
     );
 
     ctx.lineWidth = 4;
@@ -134,27 +75,46 @@ function drawStretch(factor){
     ctx.stroke();
 
 
+
+    /* عنوان الشكل */
+
     ctx.fillStyle = "black";
 
-    ctx.font = "18px Arial";
+    ctx.font = "bold 18px Arial";
 
     ctx.fillText(
     "قبل التمدد",
-    48,
+    45,
     190
     );
 
 
 
-    /* الشكل بعد التمدد */
+    /* طول الضلع */
+
+    ctx.fillStyle = "#1565ff";
+
+    ctx.font = "bold 17px Arial";
+
+    ctx.fillText(
+    `طول الضلع = ${originalMathSize}`,
+    40,
+    220
+    );
+
+
+
+    /* =====================================
+       الشكل بعد التمدد
+    ===================================== */
 
     ctx.beginPath();
 
     ctx.rect(
-    250,
-    130 - (newSize / 2),
-    newSize,
-    newSize
+    260,
+    130 - (newDrawSize / 2),
+    newDrawSize,
+    newDrawSize
     );
 
     ctx.lineWidth = 4;
@@ -164,27 +124,48 @@ function drawStretch(factor){
     ctx.stroke();
 
 
+
+    /* عنوان الشكل */
+
     ctx.fillStyle = "black";
+
+    ctx.font = "bold 18px Arial";
 
     ctx.fillText(
     "بعد التمدد",
-    245,
+    255,
     190
     );
 
 
 
-    /* السهم */
+    /* طول الضلع الجديد */
+
+    ctx.fillStyle = "#ffd600";
+
+    ctx.font = "bold 17px Arial";
+
+    ctx.fillText(
+    `طول الضلع = ${newMathSize}`,
+    245,
+    220
+    );
+
+
+
+    /* =====================================
+       السهم
+    ===================================== */
 
     ctx.beginPath();
 
     ctx.moveTo(150,130);
 
-    ctx.lineTo(230,130);
+    ctx.lineTo(240,130);
 
     ctx.strokeStyle = "#7b1fa2";
 
-    ctx.lineWidth = 3;
+    ctx.lineWidth = 4;
 
     ctx.stroke();
 
@@ -194,11 +175,11 @@ function drawStretch(factor){
 
     ctx.beginPath();
 
-    ctx.moveTo(230,130);
+    ctx.moveTo(240,130);
 
-    ctx.lineTo(215,120);
+    ctx.lineTo(225,120);
 
-    ctx.lineTo(215,140);
+    ctx.lineTo(225,140);
 
     ctx.closePath();
 
@@ -208,148 +189,59 @@ function drawStretch(factor){
 
 
 
-    /* كتابة المعامل */
+    /* =====================================
+       معامل التمدد في المنتصف
+    ===================================== */
 
     ctx.fillStyle = "#7b1fa2";
 
-    ctx.font = "bold 20px Arial";
+    ctx.font = "bold 24px Arial";
 
     ctx.fillText(
     `× ${factor}`,
     170,
-    110
+    105
     );
+
+
+
+    /* =====================================
+       خط توضيحي للضلع الأول
+    ===================================== */
+
+    ctx.beginPath();
+
+    ctx.moveTo(50,100);
+
+    ctx.lineTo(50,160);
+
+    ctx.strokeStyle = "#1565ff";
+
+    ctx.lineWidth = 2;
+
+    ctx.stroke();
+
+
+
+    /* =====================================
+       خط توضيحي للضلع الثاني
+    ===================================== */
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+    245,
+    130 - (newDrawSize / 2)
+    );
+
+    ctx.lineTo(
+    245,
+    130 + (newDrawSize / 2)
+    );
+
+    ctx.strokeStyle = "#ffd600";
+
+    ctx.lineWidth = 2;
+
+    ctx.stroke();
 }
-
-
-
-/* =========================================
-   محيط الدائرة
-========================================= */
-
-function calculateCircumference(){
-
-    const diameter =
-    parseFloat(
-    document.getElementById(
-    "diameterValue"
-    ).value
-    );
-
-    if(
-        isNaN(diameter) ||
-        diameter <= 0
-    ){
-
-        alert(
-        "أدخل قطر صحيح أكبر من صفر"
-        );
-
-        return;
-    }
-
-    const circumference =
-    Math.PI * diameter;
-
-    document.getElementById(
-    "circumferenceResult"
-    ).innerHTML =
-
-    `
-    <b>
-    محيط الدائرة =
-    ${circumference.toFixed(2)}
-    </b>
-
-    <br><br>
-
-    القانون:
-
-    <br>
-
-    محيط الدائرة = π × القطر
-    `;
-}
-
-
-
-/* =========================================
-   طول القوس
-========================================= */
-
-function calculateArc(){
-
-    const radius =
-    parseFloat(
-    document.getElementById(
-    "radiusValue"
-    ).value
-    );
-
-    const angle =
-    parseFloat(
-    document.getElementById(
-    "centralAngleValue"
-    ).value
-    );
-
-    if(
-        isNaN(radius) ||
-        isNaN(angle) ||
-        radius <= 0 ||
-        angle <= 0
-    ){
-
-        alert(
-        "أدخل القيم بشكل صحيح"
-        );
-
-        return;
-    }
-
-    const arcLength =
-
-    (angle / 360) *
-
-    (2 * Math.PI * radius);
-
-    document.getElementById(
-    "arcResult"
-    ).innerHTML =
-
-    `
-    <b>
-    طول القوس =
-    ${arcLength.toFixed(2)}
-    </b>
-
-    <br><br>
-
-    القانون:
-
-    <br>
-
-    طول القوس =
-    (الزاوية ÷ 360) × 2πr
-    `;
-}
-
-
-
-/* =========================================
-   إغلاق النافذة عند الضغط بالخارج
-========================================= */
-
-window.onclick = function(event){
-
-    const popups =
-    document.querySelectorAll(".popup");
-
-    popups.forEach(function(popup){
-
-        if(event.target === popup){
-
-            popup.style.display = "none";
-        }
-    });
-};
