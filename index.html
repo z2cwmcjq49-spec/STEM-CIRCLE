@@ -2,150 +2,16 @@
 <html lang="ar" dir="rtl">
 
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <title>هندسة الدائرة الذكية</title>
 
-<style>
+<link rel="stylesheet" href="style.css">
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial;
-}
-
-body{
-    background:linear-gradient(135deg,#0b0f2f,#4a148c,#ffd600);
-    min-height:100vh;
-    color:white;
-    padding:20px;
-}
-
-h1{
-    text-align:center;
-    margin-bottom:30px;
-    color:#ffd600;
-    font-size:35px;
-}
-
-.menu{
-    display:flex;
-    flex-direction:column;
-    gap:18px;
-    max-width:500px;
-    margin:auto;
-}
-
-.mainBtn{
-    padding:18px;
-    border:none;
-    border-radius:18px;
-    background:linear-gradient(45deg,#1565ff,#7b1fa2,#ffd600);
-    color:white;
-    font-size:20px;
-    cursor:pointer;
-    transition:0.3s;
-    box-shadow:0 0 20px rgba(255,214,0,0.5);
-}
-
-.mainBtn:hover{
-    transform:scale(1.03);
-}
-
-.popup{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,0.8);
-    display:none;
-    justify-content:center;
-    align-items:center;
-    z-index:999;
-}
-
-.popupContent{
-    width:90%;
-    max-width:500px;
-    background:linear-gradient(145deg,#111844,#4a148c);
-    padding:25px;
-    border-radius:20px;
-    border:3px solid #ffd600;
-    box-shadow:0 0 25px rgba(255,214,0,0.6);
-    animation:pop 0.3s ease;
-}
-
-@keyframes pop{
-    from{
-        transform:scale(0.7);
-        opacity:0;
-    }
-
-    to{
-        transform:scale(1);
-        opacity:1;
-    }
-}
-
-.popupContent h2{
-    color:#ffd600;
-    margin-bottom:15px;
-}
-
-input{
-    width:100%;
-    padding:14px;
-    margin-top:12px;
-    border:none;
-    border-radius:12px;
-    background:#111827;
-    color:white;
-    font-size:16px;
-}
-
-.calcBtn{
-    width:100%;
-    margin-top:15px;
-    padding:15px;
-    border:none;
-    border-radius:12px;
-    background:linear-gradient(45deg,#1565ff,#7b1fa2,#ffd600);
-    color:white;
-    font-size:18px;
-    cursor:pointer;
-}
-
-.closeBtn{
-    margin-top:12px;
-    width:100%;
-    padding:13px;
-    border:none;
-    border-radius:12px;
-    background:#222;
-    color:white;
-    cursor:pointer;
-}
-
-.result{
-    margin-top:18px;
-    background:#111827;
-    padding:15px;
-    border-radius:15px;
-    line-height:1.8;
-    border:2px solid #ffd600;
-}
-
-canvas{
-    margin-top:15px;
-    width:100%;
-    background:white;
-    border-radius:12px;
-}
-
-</style>
 </head>
 
 <body>
@@ -180,15 +46,20 @@ onclick="openPopup('arcPopup')">
 </div>
 
 
-<!-- نافذة التمدد -->
 
-<div class="popup" id="stretchPopup">
+<!-- =========================
+     نافذة التمدد
+========================= -->
+
+<div class="popup"
+id="stretchPopup">
 
 <div class="popupContent">
 
 <h2>التمدد الهندسي</h2>
 
-<input type="number"
+<input
+type="number"
 id="stretchFactor"
 placeholder="أدخل معامل التمدد">
 
@@ -202,9 +73,12 @@ onclick="calculateStretch()">
 <div class="result"
 id="stretchResult"></div>
 
-<canvas id="drawCanvas"
-width="400"
-height="260"></canvas>
+<canvas
+id="drawCanvas"
+width="420"
+height="260">
+
+</canvas>
 
 <button class="closeBtn"
 onclick="closePopup('stretchPopup')">
@@ -217,15 +91,20 @@ onclick="closePopup('stretchPopup')">
 </div>
 
 
-<!-- نافذة المحيط -->
 
-<div class="popup" id="circumferencePopup">
+<!-- =========================
+     نافذة محيط الدائرة
+========================= -->
+
+<div class="popup"
+id="circumferencePopup">
 
 <div class="popupContent">
 
 <h2>محيط الدائرة</h2>
 
-<input type="number"
+<input
+type="number"
 id="diameterValue"
 placeholder="أدخل القطر">
 
@@ -250,19 +129,25 @@ onclick="closePopup('circumferencePopup')">
 </div>
 
 
-<!-- نافذة القوس -->
 
-<div class="popup" id="arcPopup">
+<!-- =========================
+     نافذة طول القوس
+========================= -->
+
+<div class="popup"
+id="arcPopup">
 
 <div class="popupContent">
 
 <h2>طول القوس</h2>
 
-<input type="number"
+<input
+type="number"
 id="radiusValue"
 placeholder="أدخل نصف القطر">
 
-<input type="number"
+<input
+type="number"
 id="centralAngleValue"
 placeholder="أدخل الزاوية المركزية">
 
@@ -286,192 +171,7 @@ onclick="closePopup('arcPopup')">
 </div>
 </div>
 
-
-<script>
-
-function openPopup(id){
-
-document.getElementById(id).style.display="flex";
-
-}
-
-
-function closePopup(id){
-
-document.getElementById(id).style.display="none";
-
-}
-
-
-
-// التمدد الهندسي
-
-function calculateStretch(){
-
-let factor =
-parseFloat(document.getElementById("stretchFactor").value);
-
-if(isNaN(factor)){
-
-alert("أدخل معامل تمدد صحيح");
-
-return;
-
-}
-
-document.getElementById("stretchResult").innerHTML=
-
-`
-<b>معامل التمدد = ${factor}</b>
-
-<br><br>
-
-القانون:
-
-<br>
-
-الشكل الجديد = الشكل الأصلي × معامل التمدد
-
-`;
-
-drawStretch(factor);
-
-}
-
-
-
-// الرسم قبل وبعد التمدد
-
-function drawStretch(factor){
-
-let canvas =
-document.getElementById("drawCanvas");
-
-let ctx = canvas.getContext("2d");
-
-ctx.clearRect(0,0,canvas.width,canvas.height);
-
-
-// الشكل الأصلي
-
-ctx.beginPath();
-
-ctx.rect(60,90,70,70);
-
-ctx.lineWidth=4;
-
-ctx.strokeStyle="#1565ff";
-
-ctx.stroke();
-
-ctx.fillStyle="black";
-
-ctx.font="18px Arial";
-
-ctx.fillText("قبل التمدد",45,200);
-
-
-// الشكل بعد التمدد
-
-let newSize = 70 * factor;
-
-ctx.beginPath();
-
-ctx.rect(230,120-(newSize/2),newSize,newSize);
-
-ctx.lineWidth=4;
-
-ctx.strokeStyle="#ffd600";
-
-ctx.stroke();
-
-ctx.fillStyle="black";
-
-ctx.fillText("بعد التمدد",245,200);
-
-ctx.fillText("× "+factor,175,60);
-
-}
-
-
-
-// محيط الدائرة
-
-function calculateCircumference(){
-
-let d =
-parseFloat(document.getElementById("diameterValue").value);
-
-if(isNaN(d)){
-
-alert("أدخل قيمة صحيحة");
-
-return;
-
-}
-
-let c = Math.PI * d;
-
-document.getElementById("circumferenceResult").innerHTML=
-
-`
-<b>محيط الدائرة = ${c.toFixed(2)}</b>
-
-<br><br>
-
-القانون:
-
-<br>
-
-محيط الدائرة = π × القطر
-
-`;
-
-}
-
-
-
-// طول القوس
-
-function calculateArc(){
-
-let r =
-parseFloat(document.getElementById("radiusValue").value);
-
-let a =
-parseFloat(document.getElementById("centralAngleValue").value);
-
-if(isNaN(r) || isNaN(a)){
-
-alert("أدخل القيم بشكل صحيح");
-
-return;
-
-}
-
-let length =
-(a/360) * (2 * Math.PI * r);
-
-document.getElementById("arcResult").innerHTML=
-
-`
-<b>طول القوس = ${length.toFixed(2)}</b>
-
-<br><br>
-
-القانون:
-
-<br>
-
-طول القوس =
-
-(الزاوية ÷ 360) × 2πr
-
-`;
-
-}
-
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
